@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "./node_modules/.bin/ts-node src/app/main.ts",
-    "test": "./node_modules/.bin/mocha --compilers ts:ts-node/register ./src/**/*.spec.ts",
+    "test": "./node_modules/.bin/mocha --require ts-node/register ./src/**/*.spec.ts",
     "lint": "./node_modules/.bin/tslint -c tslint.json 'src/**/*.ts'"
   },
   "author": "",
@@ -16,9 +16,12 @@
     "superagent": "^6.1.0"
   },
   "devDependencies": {
+    "@types/chai": "^4.2.14",
     "@types/inversify": "^2.0.33",
+    "@types/mocha": "^8.0.3",
     "@types/node": "14.14.2",
     "@types/superagent": "^4.1.10",
+    "chai": "^4.2.0",
     "mocha": "^5.2.0",
     "ts-node": "^8.1.0",
     "tslint": "^6.1.3",
