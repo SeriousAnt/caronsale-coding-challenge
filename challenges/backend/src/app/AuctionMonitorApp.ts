@@ -15,12 +15,10 @@ export class AuctionMonitorApp {
     ) { }
 
     public async start(): Promise<void> {
-
         this.logger.log(`Auction Monitor started.`);
-        const auth = this.carOnSaleClient.getRunningAuctions().then(auctions => {
-            this.logger.log(auctions)
-        }).catch(error => this.logger.log(error.message));
-        // TODO: Retrieve auctions and display aggregated information (see README.md)
+        const auctions = await this.carOnSaleClient.getRunningAuctions()
+        this.carOnSaleClient.printAuctionsOverview(auctions);
+        return;
     }
 
 }
