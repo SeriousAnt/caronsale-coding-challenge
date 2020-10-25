@@ -1,3 +1,3 @@
 export interface IAuthenticationClient {
-    authenticate(): Promise<any>;
+    authenticate(): Promise<string>;
 }

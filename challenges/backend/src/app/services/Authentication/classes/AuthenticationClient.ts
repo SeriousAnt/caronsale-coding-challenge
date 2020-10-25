@@ -18,13 +18,21 @@ export class AuthenticationClient implements IAuthenticationClient {
     private baseUrl = `${this.config.apiEndpoint}/authentication`;
     private request = superagent.agent();
 
-    public async authenticate(): Promise<any> {
+    /**
+     * Authenticates user and returns access token
+     */
+    public async authenticate(): Promise<string> {
         this.logger.log(`Authenticating ${this.config.apiUser} to API`);
         const req: IAuthenticationRequest = {
             password: Utility.hashPasswordWithCycles(this.config.apiPassword, this.config.apiPasswordHashCycles),
             meta: '',
         }
-        return this.request.put(this.baseUrl + '/' + this.config.apiUser).send(req);
+        const response = await this.request.put(this.baseUrl + '/' + this.config.apiUser).send(req);
+        if (response && response.body) {
+            return response.body.token;
+        } else if (response.error) {
+            throw new Error(response.error.message);
+        }
     }
 }
 
