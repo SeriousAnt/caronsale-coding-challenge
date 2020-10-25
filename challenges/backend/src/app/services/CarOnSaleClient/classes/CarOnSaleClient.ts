@@ -6,6 +6,7 @@ import { IAuthenticationClient } from '../../Authentication/interface/IAuthentic
 import { IConfig } from '../../Configuration/interface/IConfig';
 import { ILogger } from '../../Logger/interface/ILogger';
 import { ICarOnSaleClient } from '../interface/ICarOnSaleClient';
+import { IAuction } from '../../../AuctionsReport';
 
 @injectable()
 export class CarOnSaleClient implements ICarOnSaleClient {
@@ -26,34 +27,4 @@ export class CarOnSaleClient implements ICarOnSaleClient {
             .set('authtoken', authResponse.token);
         return auctionsResponse.body.items;
     }
-
-    public printAuctionsOverview(auctions: IAuction[]): void {
-        this.logger.log(`Currently running auctions: ${auctions.length}`);
-        this.logger.log(`Average number of bids: ${this.calculateNumberOfBidsAverage(auctions)}`);
-        this.logger.log(`Average completion of all auctions: ${this.calculateAuctionCompletionAverage(auctions) * 100}%`);
-    }
-
-    private calculateAuctionCompletion(auction: IAuction): number {
-        if (!auction.minimumRequiredAsk) { auction.minimumRequiredAsk = 0 };
-        if (!auction.currentHighestBidValue || auction.currentHighestBidValue === 0) { return 0 };
-        return auction.minimumRequiredAsk > auction.currentHighestBidValue ? auction.currentHighestBidValue / auction.currentHighestBidValue : 1;
-    }
-
-    private calculateAuctionCompletionAverage(auctions: IAuction[]): number {
-        return auctions.map(this.calculateAuctionCompletion).reduce((p, c) => p + c, 0) / auctions.length;
-    }
-
-    private calculateNumberOfBidsAverage(auctions: IAuction[]): number {
-        return auctions.map(a => a.numBids).reduce((p, c) => p + c, 0) / auctions.length;
-    }
-}
-
-export interface IAuction {
-    id: string;
-    label: string;
-    endingTime: Date;
-    startedAt: Date;
-    numBids: number;
-    minimumRequiredAsk: number;
-    currentHighestBidValue: number;
 }

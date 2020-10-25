@@ -1,4 +1,4 @@
-import { IAuction } from "../classes/CarOnSaleClient";
+import { IAuction } from '../../../AuctionsReport';
 
 /**
  * This service describes an interface to access auction data from the CarOnSale API.
@@ -6,6 +6,4 @@ import { IAuction } from "../classes/CarOnSaleClient";
 export interface ICarOnSaleClient {
 
     getRunningAuctions(): Promise<IAuction[]>
-    printAuctionsOverview(auctions: IAuction[]): void;
-
 }

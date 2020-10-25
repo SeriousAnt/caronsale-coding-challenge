@@ -37,4 +37,5 @@ const app = container.resolve(AuctionMonitorApp);
  */
 (async () => {
     await app.start();
+    process.exit(0)
 })();

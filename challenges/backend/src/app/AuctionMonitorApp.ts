@@ -5,6 +5,7 @@ import { ILogger } from "./services/Logger/interface/ILogger";
 import { DependencyIdentifier } from "./DependencyIdentifiers";
 
 import { ICarOnSaleClient } from "./services/CarOnSaleClient/interface/ICarOnSaleClient";
+import { AuctionsReport } from "./AuctionsReport";
 
 @injectable()
 export class AuctionMonitorApp {
@@ -17,7 +18,9 @@ export class AuctionMonitorApp {
     public async start(): Promise<void> {
         this.logger.log(`Auction Monitor started.`);
         const auctions = await this.carOnSaleClient.getRunningAuctions()
-        this.carOnSaleClient.printAuctionsOverview(auctions);
+        this.logger.log(`Currently running auctions: ${auctions.length}`);
+        this.logger.log(`Average number of bids: ${AuctionsReport.calculateNumberOfBidsAverage(auctions)}`);
+        this.logger.log(`Average completion of all auctions: ${AuctionsReport.calculateAuctionCompletionAverage(auctions) * 100}%`);
         return;
     }
 
