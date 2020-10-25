@@ -5,6 +5,8 @@ import { AuctionMonitorApp } from "./AuctionMonitorApp";
 import { DependencyIdentifier } from "./DependencyIdentifiers";
 import { IConfig } from "./services/Configuration/interface/IConfig";
 import { Config } from "./services/Configuration/classes/config";
+import { IAuthenticationClient } from "./services/Authentication/interface/IAuthenticationClient";
+import { AuthenticationClient } from "./services/Authentication/classes/AuthenticationClient";
 
 /*
  * Create the DI container.
@@ -18,6 +20,7 @@ const container = new Container({
  */
 container.bind<ILogger>(DependencyIdentifier.LOGGER).to(Logger);
 container.bind<IConfig>(DependencyIdentifier.CONFIG).to(Config);
+container.bind<IAuthenticationClient>(DependencyIdentifier.AUTH).to(AuthenticationClient);
 
 
 
