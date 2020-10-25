@@ -10,18 +10,19 @@ import { Utility } from './Utility';
 @injectable()
 export class AuthenticationClient implements IAuthenticationClient {
 
+    public constructor(
+        @inject(DependencyIdentifier.LOGGER) private logger: ILogger,
+        @inject(DependencyIdentifier.CONFIG) private config: IConfig
+    ) { }
 
-    public constructor(@inject(DependencyIdentifier.LOGGER) private logger: ILogger, @inject(DependencyIdentifier.CONFIG) private config: IConfig) {
-    }
 
-
-    private baseUrl = `${this.config.apiEndpoint}/authentication`;
+    private baseUrl = `${this.config.apiEndpoint}/v1/authentication`;
     private request = superagent.agent();
 
     /**
      * Authenticates user and returns access token
      */
-    public async authenticate(): Promise<string> {
+    public async authenticate(): Promise<IAuthenticationResponse> {
         this.logger.log(`Authenticating ${this.config.apiUser} to API`);
         const req: IAuthenticationRequest = {
             password: Utility.hashPasswordWithCycles(this.config.apiPassword, this.config.apiPasswordHashCycles),
@@ -29,7 +30,7 @@ export class AuthenticationClient implements IAuthenticationClient {
         }
         const response = await this.request.put(this.baseUrl + '/' + this.config.apiUser).send(req);
         if (response && response.body) {
-            return response.body.token;
+            return response.body as IAuthenticationResponse;
         } else if (response.error) {
             throw new Error(response.error.message);
         }
@@ -39,4 +40,14 @@ export class AuthenticationClient implements IAuthenticationClient {
 interface IAuthenticationRequest {
     password: string;
     meta: string;
+}
+
+export interface IAuthenticationResponse {
+    token: string;
+    authenticated: boolean;
+    userId: string;
+    internalUserId: number;
+    internalUserUUID: string;
+    type: number;
+    privileges: string;
 }
