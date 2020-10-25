@@ -1,11 +1,11 @@
-import "reflect-metadata";
+import 'reflect-metadata';
 
-import { inject, injectable } from "inversify";
-import { ILogger } from "./services/Logger/interface/ILogger";
-import { DependencyIdentifier } from "./DependencyIdentifiers";
+import { inject, injectable } from 'inversify';
+import { ILogger } from './services/Logger/interface/ILogger';
+import { DependencyIdentifier } from './DependencyIdentifiers';
 
-import { ICarOnSaleClient } from "./services/CarOnSaleClient/interface/ICarOnSaleClient";
-import { AuctionsReport } from "./AuctionsReport";
+import { ICarOnSaleClient } from './services/CarOnSaleClient/interface/ICarOnSaleClient';
+import { AuctionsReport } from './AuctionsReport';
 
 @injectable()
 export class AuctionMonitorApp {
@@ -23,5 +23,4 @@ export class AuctionMonitorApp {
         this.logger.log(`Average completion of all auctions: ${AuctionsReport.calculateAuctionCompletionAverage(auctions) * 100}%`);
         return;
     }
-
 }

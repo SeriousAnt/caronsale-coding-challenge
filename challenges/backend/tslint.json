@@ -3,6 +3,11 @@
   "extends": [
     "tslint:recommended"
   ],
+  "linterOptions": {
+    "exclude": [
+      "**/*.spec.ts"
+    ]
+  },
   "jsRules": {},
   "rules": {
     "max-line-length": {

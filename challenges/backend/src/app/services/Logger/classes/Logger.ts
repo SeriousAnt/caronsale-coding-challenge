@@ -1,16 +1,26 @@
-import {ILogger} from "../interface/ILogger";
-import {injectable} from "inversify";
-import "reflect-metadata";
+import 'reflect-metadata';
+
+import * as winston from 'winston'
+import { ILogger } from '../interface/ILogger';
+import { injectable } from 'inversify';
 
 @injectable()
 export class Logger implements ILogger {
 
-    public constructor() {
-    }
+    private logger: winston.Logger;
 
+    public constructor() {
+        this.logger = winston.createLogger({
+            level: 'info',
+            format: winston.format.printf(log => `[LOG] ${log.message}`),
+            transports: [
+                new winston.transports.Console(),
+            ],
+        });
+
+    }
 
     public log(message: string): void {
-        console.log(`[LOG]: ${message}`);
+        this.logger.info(message);
     }
-
 }
